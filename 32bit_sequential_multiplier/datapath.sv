@@ -11,7 +11,7 @@ module datapath(
   output logic [31:0] mr_o,     
   output logic [63:0] product_o
 );
-logic [31:0] sum;
+logic [32:0] sum;
 
 //============================================================================
 // MULTIPLICAND REGISTER
@@ -52,8 +52,8 @@ assign mr_o = multiplier_reg;
 //============================================================================
 // RUNNING SUM REGISTER
 //============================================================================
-logic [63:0] run_sum_reg;
-logic [63:0] run_sum_reg_next;
+logic [64:0] run_sum_reg;
+logic [64:0] run_sum_reg_next;
 always_comb begin
   if      (rs_clear_i)  run_sum_reg_next = '0;
   else if (rs_shr_i)    run_sum_reg_next = run_sum_reg >> 1;
@@ -68,7 +68,7 @@ always_ff @(posedge clk_i or negedge rst_n_i) begin
   end
 end
 
-assign product_o = run_sum_reg;
+assign product_o = run_sum_reg[63:0];
 
 //============================================================================
 // 32-BIT ADDER 
